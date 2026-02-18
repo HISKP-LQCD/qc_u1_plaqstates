@@ -10,7 +10,7 @@ def _getPlaqStateOps(l_max, g2):
     stateDiff = []
     evals = []
 
-    for n in range(2 * l_max + 1):
+    for n in range(round(2 * l_max + 1)):
 
         if n % 2 == 1:
             a = scipy.special.mathieu_b(n + 1, q)
@@ -28,11 +28,11 @@ def _getPlaqStateOps(l_max, g2):
         eval = 0.5 * g2 * a + 1.0 / g2
         evals.append(eval)
 
-    ImTrP = np.zeros((2 * l_max + 1, 2 * l_max + 1))
-    L = np.zeros((2 * l_max + 1, 2 * l_max + 1), dtype=np.complex128)
+    ImTrP = np.zeros((round(2 * l_max + 1), round(2 * l_max + 1)))
+    L = np.zeros((round(2 * l_max + 1), round(2 * l_max + 1)), dtype=np.complex128)
 
-    for i in range(2 * l_max + 1):
-        for j in range(2 * l_max + 1):
+    for i in range(round(2 * l_max + 1)):
+        for j in range(round(2 * l_max + 1)):
 
             L[i, j] = -1j * 2 * scipy.integrate.quad(
                 lambda x: states[i](x) * stateDiff[j](x), 0, np.pi)[0]
@@ -41,7 +41,7 @@ def _getPlaqStateOps(l_max, g2):
                 lambda x: states[i](x) * np.cos(2 * x) * states[j]
                 (x), 0, np.pi)[0]
 
-    ImTrP += 2.0 * np.identity(2 * l_max + 1)
+    ImTrP += 2.0 * np.identity(round(2 * l_max + 1))
 
     Lsq = (np.diag(evals) - 0.5 / g2 * ImTrP) / g2 / 2.0
 
